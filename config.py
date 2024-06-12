@@ -1,0 +1,2 @@
+SECRET_KEY = "BANANA"
+SQLALCHEMY_DATABASE_URI = "sqlite:///banco.db"

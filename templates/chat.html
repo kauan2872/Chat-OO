@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Chat</h1>
+    <div id="text">
+        {% for mensagem in mensagens %}
+            <p><strong>{{ mensagem.nome }}:</strong> {{ mensagem.mensagem }}</p>
+        {% endfor %}
+    </div>
+    <form action="/enviar/" method="POST">
+        <input type="text" name="mensagem" placeholder="Digite sua mensagem">
+        <input type="submit" value="Enviar">
+    </form>
+
+    <div id="profile-actions">
+        <h2>Atualizar Perfil</h2>
+        <form action="/atualizaUsuario/" method="POST">
+            <input type="password" name="nova_senha" placeholder="Nova senha">
+            <input type="submit" value="Atualizar">
+        </form>
+        <form action="/deletaUsuario/" method="POST">
+            <input type="submit" value="Deletar Perfil">
+        </form>
+    </div>
+    <form action="/logout/" method="POST">
+        <input type="submit" value="Logout">
+    </form>
+</body>
+</html>
