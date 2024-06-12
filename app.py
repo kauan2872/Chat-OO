@@ -36,13 +36,16 @@ class Usuario(db.Model, UserMixin):
     nome = db.Column(db.String, unique=True)
     senha = db.Column(db.String)
 
-def login_required_view(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
+def login(l):
+    
+    @wraps(l)
+    
+    def verifica(*args, **kwargs):
         if not current_user.is_authenticated:
+            
             return redirect('/')
-        return f(*args, **kwargs)
-    return decorated_function
+        return l(*args, **kwargs)
+    return verifica
 
 
 class Command(ABC):
@@ -143,12 +146,12 @@ def validaLogin():
     return redirect('/')
 
 @app.route("/chat/")
-@login_required_view
+@login
 def chat():
     return Response(render_template("chat.html", mensagens=chat_instance.mensagens), 200)
 
 @app.route("/enviar/", methods=["POST"])
-@login_required_view
+@login
 def enviar():
     chat2 = Chat()
     texto = request.form["mensagem"].lower()
@@ -162,20 +165,20 @@ def enviar():
     return redirect("/chat/")
 
 @app.route("/atualizaUsuario/", methods=["POST"])
-@login_required_view
+@login
 def atualizaUsuario():
     chat_instance.atualizar_perfil(current_user.id, request.form['nova_senha'])
     return redirect("/chat/")
 
 @app.route("/deletaUsuario/", methods=["POST"])
-@login_required_view
+@login
 def deletaUsuario():
     chat_instance.deletar_perfil(current_user.id)
     logout_user()
     return redirect("/")
 
 @app.route('/logout/', methods=["POST"])
-@login_required_view
+@login
 def logout():
     logout_user()
     return redirect("/")
